@@ -1,0 +1,25 @@
+{
+  "name": "Launcher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "scripts": {
+    "start": "electron game.js",
+    "test": "electromon game.js",
+    "build": "electron-packager . Launcher --icon=./public/images/icon.ico"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@lytrax/custom-electron-titlebar": "^3.1.11",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "custom-electron-titlebar": "^3.2.6",
+    "electromon": "^1.0.10",
+    "electron": "^10.1.4",
+    "electron-packager": "^15.2.0"
+  }
+}

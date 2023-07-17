@@ -1,0 +1,218 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <script  src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js' ></script>
+        <style>
+            html,body{
+                margin: 0;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+                background: url('images/login_screen_1.jpg') no-repeat;
+                background-size: cover;
+
+            }
+            #server{
+                 position: absolute;
+                height: 10%;
+                width: 60%;
+
+                top: 30%;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 14px;
+                border: 5px solid rgb(65, 36, 66);
+                background-color: #4e3e62;
+                color:white;
+                outline: none;
+                box-sizing:border-box;
+                font-size: 2.5vw;
+                transition: box-shadow .2s;
+            }
+            #server:hover{
+                box-shadow: inset 1px 1px 15px #00a3a3,
+                0px 0px 20px darkcyan;
+
+            }
+            .ip{
+                 outline: none;
+                position: absolute;
+                left: 0;
+                width: 80%;
+                height: 100%;
+                padding: 0.5% 0;
+                text-align: center;
+                font-size: 3vw;
+                 color: white;
+                 background-color: transparent;
+                box-sizing:border-box;
+                border-top: none;
+                border-left: none;
+                border-bottom: none;
+                border-right: 5px solid rgb(65, 36, 66);
+                 border-top-left-radius: 12px;
+                border-bottom-left-radius: 12px;
+
+            }
+            .port{
+                position: absolute;
+                width: 20%;
+                height: 100%;
+                outline: none;
+                right: 0;
+                background-color: transparent;
+                color: white;
+                text-align: center;
+                font-size: 2vw;
+                border: none;
+                box-sizing:border-box;
+                border-top-right-radius: 12px;
+                border-bottom-right-radius: 12px;
+            }
+
+            #create{
+                position: absolute;
+                bottom: 30%;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 10%;
+                width: 20%;
+                text-align: center;
+                border-radius: 14px;
+                border: 5px solid rgb(65, 36, 66);
+                background-color: #4e3e62;
+                color:white;
+                outline: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                box-sizing:border-box;
+                font-size: 3.5vw;
+                transition: box-shadow .2s, color .2s;
+            }
+            #create:hover{
+                box-shadow: inset 1px 1px 15px #00a3a3,
+                0px 0px 20px darkcyan;
+                color: coral;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='server'>
+
+            <input type="text" id="ip" placeholder='Enter ip' class="ip">
+            <input type="text" id="only_num" maxlength="4" placeholder='Enter port' class="port">
+        </div>
+
+
+        <div id='create'>Create</div>
+
+        <script>
+            const { ipcRenderer } = require( 'electron' );
+            let adress;
+            let port;
+            let start = false;
+
+
+
+
+
+
+
+            function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+                //compatibility for firefox and chrome
+                var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+                var pc = new myPeerConnection({
+                    iceServers: []
+                }),
+                noop = function() {},
+                localIPs = {},
+                ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+                key;
+
+                function iterateIP(ip) {
+                    if (!localIPs[ip]) onNewIP(ip);
+                    localIPs[ip] = true;
+                }
+
+                 //create a bogus data channel
+                pc.createDataChannel("");
+
+                // create offer and set local description
+                pc.createOffer().then(function(sdp) {
+                    sdp.sdp.split('\n').forEach(function(line) {
+                        if (line.indexOf('candidate') < 0) return;
+                        line.match(ipRegex).forEach(iterateIP);
+                    });
+
+                    pc.setLocalDescription(sdp, noop, noop);
+                }).catch(function(reason) {
+                    // An error occurred, so handle the failure to connect
+                });
+
+                //listen for candidate events
+                pc.onicecandidate = function(ice) {
+                    if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+                    ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+                };
+            }
+
+// Usage
+
+getUserIP(function(ip){
+     document.getElementById('ip').textContent = ip;
+     adress = ip;
+});
+
+
+create.addEventListener('click',()=>{
+    if(start === false){
+    if(only_num.value.length === 4){
+
+        adress = ip;
+        port = only_num.value;
+        start = true;
+        document.getElementById("only_num").readOnly = true;
+
+        create.textContent = 'Stop';
+        ipcRenderer.send('start', port);
+    }
+    else{
+        return;
+    }
+    }
+    else if(start === true){
+     start = false;
+     create.textContent = 'Create';
+     document.getElementById("only_num").readOnly = false;
+     ipcRenderer.send('end', port);
+     console.log('bb');
+    }
+});
+
+
+
+                const input = document.getElementById('only_num');
+
+                input.addEventListener('keydown', function(event) {
+                    // Разрешаем: backspace, delete, tab и escape
+                    if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
+                        // Разрешаем: Ctrl+A
+                        (event.keyCode == 65 && event.ctrlKey === true) ||
+                        // Разрешаем: home, end, влево, вправо
+                        (event.keyCode >= 35 && event.keyCode <= 39)) {
+
+                        // Ничего не делаем
+                        return;
+                    } else {
+                        // Запрещаем все, кроме цифр на основной клавиатуре, а так же Num-клавиатуре
+                        if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+
+        </script>
+    </body>
+</html>

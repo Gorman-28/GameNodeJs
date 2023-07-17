@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html >
+    <head>
+        <title>StarBattle</title>
+        <meta charset='utf-8'>
+
+        <script  src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js' ></script>
+
+        <script defer src='indexlol.js' ></script>
+
+        <link rel = 'stylesheet' href = 'index.css'>
+    </head>
+    <body>
+
+
+        <div id='name_box' class='layer'>
+         <div id='server'>
+
+            <input type="text" maxlength="20" id="ip" placeholder='Enter ip' class="ip">
+            <input type="text" id="only_num" maxlength="4" placeholder='Enter port' class="port">
+        </div>
+            <img src='images/login_screen_1.jpg' id='name__image' onselectstart="return false" onmousedown="return false" >
+            <input id='player_name_input' placeholder='Enter your name' value = '' maxlength="12">
+            <button id='player_name_button' onselectstart="return false" onmousedown="return false" >START</button>
+        </div>
+        <div id='choose_team' class='layer' onselectstart="return false" onmousedown="return false" >
+            <img id='choose__image' src='images/choose_team.gif' >
+            <div id='choose'>Choose team </div>
+            <div id='blue'><img src='images/blue_team.png' id='bl_emblem'><div id='team_blue_text' class='text blue' >0/5</div> </div>
+            <div id='red'><img src='images/red_team.png' id='r_emblem'><div id='team_red_text' class='text red'>0/5</div> </div>
+        </div>
+
+        <div id='players_field' class='layer' onselectstart="return false" onmousedown="return false" ></div>
+        <div id='players_shoots' onselectstart="return false" onmousedown="return false" > </div>
+        <div id='players_shilds' onselectstart="return false" onmousedown="return false" > </div>
+        <div id='box_field' onselectstart="return false" onmousedown="return false" > </div>
+        <div id='players_names_panel' onselectstart="return false" onmousedown="return false"  ></div>
+        <div id='players_names_panel2' onselectstart="return false" onmousedown="return false"  ></div>
+        <div id='ready1' onselectstart="return false" onmousedown="return false" ></div>
+        <div id='ready2' onselectstart="return false" onmousedown="return false" ></div>
+        <div id='stuff_field' class='layer' >
+            <div id='play_ground' class='layer' onselectstart="return false" onmousedown="return false" >
+
+            <img id='play__image' src="images/play-ground.jpg" alt="" onselectstart="return false" onmousedown="return false" >
+            </div>
+           <div id="play_zone" onselectstart="return false" onmousedown="return false" ></div>
+
+            <div id='igrok_ready' onselectstart="return false" onmousedown="return false" >0/10</div>
+            <div id='start_numbers' onselectstart="return false" onmousedown="return false" > </div>
+            <div id='game_start_layer' onselectstart="return false" onmousedown="return false" > </div>
+
+            <div id='chat'>
+                <div id='all_message' onselectstart="return false" onmousedown="return false" ></div>
+                <input  maxlength='20' contenteditable="true" id='chat_text' wrap="off">
+                <img src='' id='submit_mes' onselectstart="return false" onmousedown="return false" >
+            </div>
+
+            <div id='want_to_leave'>
+                <div class="leave_mes">Do you really want to exit?</div>
+                <div id="leave_yes">Yes</div>
+                <div id="leave_no">No</div>
+            </div>
+            <div id='leave_answer'>
+                <div class="leave_mes">Server closed</div>
+                <div id="leave_ok">Ok</div>
+
+            </div>
+            <div id="settings" onselectstart="return false" onmousedown="return false" >
+                <img id='settings_image' src="images/settings.png" alt="">
+            </div>
+            <div id="settings_menu" onselectstart="return false" onmousedown="return false" >
+                <div id="music">
+
+                    <section id='test_music' track='0'>
+                            <audio id='track0' src='music/1.mp3'  controls ></audio>
+                    </section>
+
+                </div>
+                <div id="ships">
+                    <div class="ships" id='ship1'>
+                        <img class='ship_image' src='' alt="">
+                    </div>
+                    <div class="ships" id='ship2'>
+                        <img class='ship_image' src='' alt="">
+                    </div>
+                    <div class="ships" id='ship3'>
+                        <img class='ship_image' src='' alt="">
+                    </div>
+                </div>
+                <div id="shots">
+                    <div class="shots" id='shot1'>
+                        <img class='shots_image' src="images/shoot1.png" alt="">
+                    </div>
+                    <div class="shots" id='shot2'>
+                        <img class='shots_image' src="images/shoot2.png" alt="">
+                    </div>
+                </div>
+                 <div id="help">
+
+                </div>
+
+            </div>
+            <div id= 'ready_check' onselectstart="return false" onmousedown="return false" ></div>
+            <img src='images/asteroid_1.gif' id = 'rectangle' onselectstart="return false" onmousedown="return false" >
+            <div id='big_layer'  ></div>
+            <div id='win_team_div'  ></div>
+            <div id='pre_layer'  ></div>
+
+            <script>
+              window.addEventListener("load", function(event) {
+                  setTimeout(()=>{
+                      pre_layer.style.display = 'none';
+                  },200);
+
+                });
+
+
+
+            </script>
+        </div>
+    </body>
+</html>
+
+
+
+<!--Вадим я знаю, что это ужасно, просто ужасно...
+    Кстати текст в электроне отображаетьяс нормальнл, по центру, а не как в браузере, так что так
+-->
